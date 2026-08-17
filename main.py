@@ -67,18 +67,36 @@ class TaskList:
 
         print(f"Task {task_number} not found.")
 
+    def sort_by_priority(self):
+        priority_order = {"High": 1, "Medium": 2, "Low": 3}
+
+        if self.head is None or self.head.next is None:
+            return
+
+        swapped = True
+        while swapped:
+            swapped = False
+            current = self.head
+            while current.next:
+                current_rank = priority_order[current.priority]
+                next_rank = priority_order[current.next.priority]
+                if current_rank > next_rank:
+                    current.title, current.next.title = current.next.title, current.title
+                    current.priority, current.next.priority = current.next.priority, current.priority
+                    current.completed, current.next.completed = current.next.completed, current.completed
+                    swapped = True
+                current = current.next
+
 
 if __name__ == "__main__":
     tasks = TaskList()
     tasks.add_task("Finish CV", "High")
     tasks.add_task("Buy groceries", "Low")
     tasks.add_task("Clean house", "Medium")
+    tasks.add_task("Call bank", "High")
     tasks.list_tasks()
 
-    print("\n--- Completing task 1 ---")
-    tasks.complete_task(1)
+    print("\n--- Sorting by priority ---")
+    tasks.sort_by_priority()
     tasks.list_tasks()
 
-    print("\n--- Deleting task 2 ---")
-    tasks.delete_task(2)
-    tasks.list_tasks()
