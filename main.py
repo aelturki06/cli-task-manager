@@ -33,9 +33,52 @@ class TaskList:
             current = current.next
             index += 1
 
+    def complete_task(self, task_number):
+        current = self.head
+        index = 1
+        while current:
+            if index == task_number:
+                current.completed = True
+                print(f"Task {task_number} marked as complete.")
+                return
+            current = current.next
+            index += 1
+        print(f"Task {task_number} not found.")
+
+    def delete_task(self, task_number):
+        if self.head is None:
+            print("No tasks to delete.")
+            return
+
+        if task_number == 1:
+            self.head = self.head.next
+            print(f"Task {task_number} deleted.")
+            return
+
+        current = self.head
+        index = 1
+        while current.next:
+            if index + 1 == task_number:
+                current.next = current.next.next
+                print(f"Task {task_number} deleted.")
+                return
+            current = current.next
+            index += 1
+
+        print(f"Task {task_number} not found.")
+
 
 if __name__ == "__main__":
     tasks = TaskList()
     tasks.add_task("Finish CV", "High")
     tasks.add_task("Buy groceries", "Low")
+    tasks.add_task("Clean house", "Medium")
+    tasks.list_tasks()
+
+    print("\n--- Completing task 1 ---")
+    tasks.complete_task(1)
+    tasks.list_tasks()
+
+    print("\n--- Deleting task 2 ---")
+    tasks.delete_task(2)
     tasks.list_tasks()
