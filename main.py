@@ -87,16 +87,33 @@ class TaskList:
                     swapped = True
                 current = current.next
 
+    def save_to_file(self, filename="tasks.txt"):
+        with open(filename, "w") as f:
+            current = self.head
+            while current:
+                f.write(f"{current.title}|{current.priority}|{current.completed}\n")
+                current = current.next
+
+    def load_from_file(self, filename="tasks.txt"):
+        try:
+            with open(filename, "r") as f:
+                for line in f:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    title, priority, completed = line.split("|")
+                    self.add_task(title, priority)
+                    if completed == "True":
+                        current = self.head
+                        while current.next:
+                            current = current.next
+                        current.completed = True
+        except FileNotFoundError:
+            pass
+
 
 if __name__ == "__main__":
     tasks = TaskList()
-    tasks.add_task("Finish CV", "High")
-    tasks.add_task("Buy groceries", "Low")
-    tasks.add_task("Clean house", "Medium")
-    tasks.add_task("Call bank", "High")
-    tasks.list_tasks()
-
-    print("\n--- Sorting by priority ---")
+    tasks.load_from_file()
     tasks.sort_by_priority()
     tasks.list_tasks()
-
