@@ -112,8 +112,56 @@ class TaskList:
             pass
 
 
-if __name__ == "__main__":
+def main():
     tasks = TaskList()
     tasks.load_from_file()
-    tasks.sort_by_priority()
-    tasks.list_tasks()
+
+    while True:
+        print("\n===== Task Manager =====")
+        print("1. Add task")
+        print("2. View tasks")
+        print("3. Complete task")
+        print("4. Delete task")
+        print("5. Sort by priority")
+        print("6. Exit")
+        choice = input("Choose an option: ")
+
+        if choice == "1":
+            title = input("Enter task title: ")
+            priority = input("Enter priority (High/Medium/Low):").strip().capitalize()
+            if priority not in ("High", "Medium", "Low"):
+                print("Invalid priority. Task not added.")
+            else:
+                tasks.add_task(title, priority)
+                tasks.save_to_file()		
+
+        elif choice == "2":
+            tasks.list_tasks()
+
+        elif choice == "3":
+            tasks.list_tasks()
+            task_number = int(input("Enter task number to complete: "))
+            tasks.complete_task(task_number)
+            tasks.save_to_file()
+
+        elif choice == "4":
+            tasks.list_tasks()
+            task_number = int(input("Enter task number to delete: "))
+            tasks.delete_task(task_number)
+            tasks.save_to_file()
+
+        elif choice == "5":
+            tasks.sort_by_priority()
+            tasks.list_tasks()
+            tasks.save_to_file()
+
+        elif choice == "6":
+            print("Goodbye!")
+            break
+
+        else:
+            print("Invalid option, try again.")
+
+
+if __name__ == "__main__":
+    main()
